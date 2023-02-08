@@ -51,4 +51,14 @@ class HomeController extends Controller
     {
         return view('design.contact');
     }
+
+    public function teachers()
+    {
+        return view('design.teachers');
+    }
+
+    public function blogs()
+    {
+        return view('design.blogs');
+    }
 }

@@ -36,6 +36,8 @@ Route::get('about', [HomeController::class, 'about']);
 Route::get('courses', [HomeController::class, 'courses']);
 Route::get('price', [HomeController::class, 'price']);
 Route::get('contact', [HomeController::class, 'contact']);
+Route::get('teachers', [HomeController::class, 'teachers']);
+Route::get('blogs', [HomeController::class, 'blogs']);
 
 Auth::routes();
 

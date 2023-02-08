@@ -50,10 +50,10 @@
 <ul class="navbar-nav ml-auto">
 <li class="nav-item active"><a href="{{ url('/') }}" class="nav-link pl-0">Home</a></li>
 <li class="nav-item"><a href="{{ url('about') }}" class="nav-link">About</a></li>
-<li class="nav-item"><a href="teacher.html" class="nav-link">Teacher</a></li>
+<li class="nav-item"><a href="{{ url('teachers') }}" class="nav-link">Teacher</a></li>
 <li class="nav-item"><a href="{{ url('courses') }}" class="nav-link">Courses</a></li>
 <li class="nav-item"><a href="{{ url('price') }}" class="nav-link">Pricing</a></li>
-<li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
+<li class="nav-item"><a href="{{ url('blogs') }}" class="nav-link">Blog</a></li>
 <li class="nav-item"><a href="{{ url('contact') }}" class="nav-link">Contact</a></li>
 
 @guest
