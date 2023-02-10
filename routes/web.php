@@ -2,9 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\Auth\AdminLoginController;
-
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\AdminLoginController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\SettingController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,17 +22,6 @@ use App\Http\Controllers\HomeController;
 //     return view('welcome');
 // });
 
-//Admin Routes
-	Route::prefix('admin')->group(function () {
-	    	Route::get('login', [AdminLoginController::class,'login'])->name('adminLogin');
-			Route::post('login', [AdminLoginController::class,'adminLogin']);
-
-			Route::group(['middleware' => 'auth:admin'], function () {
-				Route::post('logout', [AdminLoginController::class,'logout']);
-	    	});
-	});
-//End Admin routes
-
 Route::get('/', [HomeController::class, 'home']);
 Route::get('about', [HomeController::class, 'about']);
 Route::get('courses', [HomeController::class, 'courses']);
@@ -42,3 +33,25 @@ Route::get('blogs', [HomeController::class, 'blogs']);
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+# Admin routes
+Route::prefix('admin')->group(function () {
+    Route::get('login', [AdminLoginController::class, 'login'])->name('adminLogin');
+    Route::post('login', [AdminLoginController::class, 'adminLogin']);
+    Route::post('logout', [AdminLoginController::class, 'logout']);
+
+
+    Route::get('dashboard', [DashboardController::class, 'index']);
+    Route::get('change-password', [DashboardController::class, 'changePassword']);
+    Route::post('change-password', [DashboardController::class, 'postChangePassword']);
+
+
+	// Route::get('users/get-users', 'UserController@getUsers');
+	// Route::resource('users', 'UserController');
+
+	Route::get('settings', [SettingController::class, 'index']);
+	Route::post('settings', [SettingController::class, 'update']);
+	
+	// Route::get('content-management', 'ContentManagementController@index');
+	// Route::post('content-management', 'ContentManagementController@update');
+});
