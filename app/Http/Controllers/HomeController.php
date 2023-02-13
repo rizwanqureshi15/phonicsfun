@@ -61,4 +61,19 @@ class HomeController extends Controller
     {
         return view('design.blogs');
     }
+
+    public function junior_readers_course()
+    {
+        return view('design.junior_readers_course');
+    }
+
+    public function book_demo()
+    {
+        return view('design.book_demo');
+    }
+
+    public function champcam()
+    {
+        return view('design.champcam');
+    }
 }

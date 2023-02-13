@@ -31,6 +31,10 @@ Route::get('contact', [HomeController::class, 'contact']);
 Route::get('teachers', [HomeController::class, 'teachers']);
 Route::get('blogs', [HomeController::class, 'blogs']);
 
+Route::get('junior-readers-course', [HomeController::class, 'junior_readers_course']);
+Route::get('book-demo', [HomeController::class, 'book_demo']);
+Route::get('champcam', [HomeController::class, 'champcam']);
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
