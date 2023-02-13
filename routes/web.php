@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\AdminLoginController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\CoursesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,8 +47,9 @@ Route::prefix('admin')->group(function () {
     Route::post('change-password', [DashboardController::class, 'postChangePassword']);
 
 
-	// Route::get('users/get-users', 'UserController@getUsers');
-	// Route::resource('users', 'UserController');
+	Route::get('courses/get-courses', [CoursesController::class, 'getCourses']);
+	Route::resource('courses', CoursesController::class);
+
 
 	Route::get('settings', [SettingController::class, 'index']);
 	Route::post('settings', [SettingController::class, 'update']);

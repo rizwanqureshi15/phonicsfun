@@ -13,6 +13,23 @@
         </a>
       </li>
 
+         <li class="c-sidebar-nav-item c-sidebar-nav-dropdown"><a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
+          <i class="c-sidebar-nav-icon cil-user"></i>
+          Manage Courses</a>
+        <ul class="c-sidebar-nav-dropdown-items">
+          <li class="c-sidebar-nav-item">
+            <a class="c-sidebar-nav-link {{ Request::is('admin/courses') ? 'active' : '' }}" href="{{ url('admin/courses') }}">
+              <span class="c-sidebar-nav-icon"></span> Courses
+            </a>
+
+            <a class="c-sidebar-nav-link {{ Request::is('admin/courses/create') ? 'active' : '' }}" href="{{ url('admin/courses/create') }}">
+              <span class="c-sidebar-nav-icon"></span> Add New
+            </a>
+          </li>
+         
+        </ul>
+      </li>
+
     <!--   <li class="c-sidebar-nav-item c-sidebar-nav-dropdown"><a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
           <i class="c-sidebar-nav-icon cil-user"></i>
           Manage Users</a>
