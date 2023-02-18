@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Course;
 
 class HomeController extends Controller
 {
@@ -29,7 +30,9 @@ class HomeController extends Controller
 
     public function home()
     {
-        return view('design.home');
+        $courses = Course::with('category')->where('is_active', true)->get();
+
+        return view('home', compact('courses'));
     }
 
     public function about()
@@ -39,7 +42,9 @@ class HomeController extends Controller
 
     public function courses()
     {
-        return view('design.courses');
+        $courses = Course::with('category')->where('is_active', true)->get();
+
+        return view('courses', compact('courses'));
     }
 
     public function price()
