@@ -149,7 +149,7 @@
     <label class="col-sm-2 col-form-label">Comprehensive Practice</label>
     <div class="col-sm-6">
         <select class="form-control @error('comprehensive_practice') parsley-error @enderror" name="comprehensive_practice">
-            @foreach(['yes' => 'Yes', 'no' => 'No'] as $key => $name)
+            @foreach(['1' => 'Yes', '0' => 'No'] as $key => $name)
              <option value="{{ $key }}"
             @if(isset($course) && $course->comprehensive_practice == $key )
                 selected="selected" 
