@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Course;
+use App\Models\Category;
+use App\Models\Demo;
 
 class HomeController extends Controller
 {
@@ -47,6 +49,27 @@ class HomeController extends Controller
         return view('courses', compact('courses'));
     }
 
+    public function courseDetail($category_name, $course_name)
+    {
+        $category_name = str_replace('-', ' ', $category_name);
+        $course_name = str_replace('-', ' ', $course_name);
+        
+        $category = Category::where('name', 'like', '%'. $category_name . '%')->first();
+        if(!$category){
+            return redirect('/');
+        }
+
+        $course = Course::where('category_id', $category->id)
+                            ->where('name', 'like', '%'. $course_name . '%')
+                            ->where('is_active', true)
+                            ->first();
+
+        if(!$course){
+            return redirect('/');
+        }
+        return view('course_detail', compact('course'));
+    }
+
     public function price()
     {
         return view('design.price');
@@ -72,13 +95,34 @@ class HomeController extends Controller
         return view('design.junior_readers_course');
     }
 
-    public function book_demo()
+    public function bookDemo()
     {
-        return view('design.book_demo');
+        $courses = Course::with('category')->where('is_active', true)->get();
+
+        return view('book_demo', compact('courses'));
     }
 
     public function champcam()
     {
         return view('design.champcam');
+    }
+
+    public function postBookDemo(Request $request){
+        
+        $rules = [
+            'parent_name' => 'required',
+            'email' => 'required|email',
+            'phone' => 'required',
+            'kid_name' => 'required',
+            'kid_age' => 'required',
+            'course_id' => 'required|integer',
+        ];
+
+        $request->validate($rules);
+        $data = $request->all();
+
+        $demo = Demo::create($data);
+
+        return back()->with('success', 'Demo booked successfully');
     }
 }

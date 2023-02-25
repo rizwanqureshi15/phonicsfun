@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\DemosController;
 use App\Http\Controllers\Admin\AdminLoginController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SettingController;
@@ -32,8 +33,10 @@ Route::get('teachers', [HomeController::class, 'teachers']);
 Route::get('blogs', [HomeController::class, 'blogs']);
 
 Route::get('junior-readers-course', [HomeController::class, 'junior_readers_course']);
-Route::get('book-demo', [HomeController::class, 'book_demo']);
 Route::get('champcam', [HomeController::class, 'champcam']);
+
+Route::get('book-demo', [HomeController::class, 'bookDemo']);
+Route::post('book-demo', [HomeController::class, 'postBookDemo']);
 
 Auth::routes();
 
@@ -54,6 +57,10 @@ Route::prefix('admin')->group(function () {
 	Route::get('courses/get-courses', [CoursesController::class, 'getCourses']);
 	Route::resource('courses', CoursesController::class);
 
+	Route::get('demos/get-demos', [DemosController::class, 'getDemos']);
+	Route::get('demos/{id}/show', [DemosController::class, 'show']);
+	Route::resource('demos', DemosController::class);
+
 
 	Route::get('settings', [SettingController::class, 'index']);
 	Route::post('settings', [SettingController::class, 'update']);
@@ -61,3 +68,6 @@ Route::prefix('admin')->group(function () {
 	// Route::get('content-management', 'ContentManagementController@index');
 	// Route::post('content-management', 'ContentManagementController@update');
 });
+
+
+Route::get('{category}/{course}', [HomeController::class, 'courseDetail']);

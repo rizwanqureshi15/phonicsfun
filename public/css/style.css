@@ -3173,3 +3173,7 @@ textarea.form-control {
   100% {
     stroke-dasharray: 89, 200;
     stroke-dashoffset: -136px; } }
+
+    .invalid-feedback{
+      color: #dc3545!important;
+    }

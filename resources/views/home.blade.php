@@ -207,7 +207,12 @@
                             </tr>
                         </table>
 
-                    <p class="button text-center"><a href="#" class="btn btn-primary px-4 py-3">View Course</a></p>
+                    <p class="button text-center">
+                        @php
+                            $url = str_replace(' ', '-', strtolower($course->category->name)).'/'.str_replace(' ', '-', strtolower($course->name));
+                        @endphp
+                        <a href="{{ url($url) }}" class="btn btn-primary px-4 py-3">View Course</a>
+                    </p>
                 </div>
                 @endforeach
             </div>
