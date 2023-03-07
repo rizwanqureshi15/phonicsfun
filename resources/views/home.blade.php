@@ -173,8 +173,9 @@
             </div>
         </div>
         <div class="row">
+            @foreach($courses as $course)
             <div class="col-md-6 col-lg-4 ftco-animate">
-                @foreach($courses as $course)
+                
                 <div class="pricing-entry bg-light pb-4 text-center">
                     <div>
                         <p><span class="price">{{ $course->category->name }}</span></p>
@@ -214,9 +215,9 @@
                         <a href="{{ url($url) }}" class="btn btn-primary px-4 py-3">View Course</a>
                     </p>
                 </div>
-                @endforeach
+                
             </div>
-            
+            @endforeach
         </div>
     </div>
 </section>
