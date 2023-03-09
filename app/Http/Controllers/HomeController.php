@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Course;
 use App\Models\Category;
 use App\Models\Demo;
+use Mail;
+use App\Mail\BookDemo;
 
 class HomeController extends Controller
 {
@@ -121,7 +123,10 @@ class HomeController extends Controller
         $request->validate($rules);
         $data = $request->all();
 
-        $demo = Demo::create($data);
+        // $demo = Demo::create($data);
+        $demo = Demo::find(1);
+        $to_email = 'rizwanqureshi15@gmail.com';
+        Mail::to($to_email)->send(new BookDemo($demo));
 
         return back()->with('success', 'Demo booked successfully');
     }

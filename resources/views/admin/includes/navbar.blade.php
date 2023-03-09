@@ -34,9 +34,9 @@
               <a class="dropdown-item" href="{{ url('admin/change-password') }}">
                 <i class="c-sidebar-nav-icon cil-settings"></i>
                 Change Password</a>
-              <!-- <a class="dropdown-item" href="{{ url('admin/settings') }}">
+              <a class="dropdown-item" href="{{ url('admin/settings') }}">
                   <i class="c-sidebar-nav-icon cil-settings"></i>
-                Settings</a> -->
+                Settings</a>
               <div class="dropdown-divider"></div><a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                 <i class="c-sidebar-nav-icon cil-account-logout"></i>
                  Logout</a>
