@@ -3,11 +3,13 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\Admin\DemosController;
 use App\Http\Controllers\Admin\AdminLoginController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\CoursesController;
+use App\Http\Controllers\Admin\TeachersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,8 +40,13 @@ Route::get('champcam', [HomeController::class, 'champcam']);
 Route::get('book-demo', [HomeController::class, 'bookDemo']);
 Route::post('book-demo', [HomeController::class, 'postBookDemo']);
 
-Auth::routes();
-
+// Auth::routes();
+Route::get('/login', [UserController::class, 'login'])->name('login');
+Route::post('/login', [UserController::class, 'postLogin']);
+Route::post('/logout', [UserController::class, 'logout'])->name('logout');
+Route::get('dashboard', [App\Http\Controllers\DashboardController::class, 'index']);
+Route::get('/change-password', [UserController::class, 'changePassword']);
+Route::post('/change-password', [UserController::class, 'postChangePassword']);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 # Admin routes
@@ -61,6 +68,9 @@ Route::prefix('admin')->group(function () {
 	Route::get('demos/{id}/show', [DemosController::class, 'show']);
 	Route::resource('demos', DemosController::class);
 
+	Route::get('teachers/get-teachers', [TeachersController::class, 'getTeachers']);
+	Route::get('teachers/{id}/show', [TeachersController::class, 'show']);
+	Route::resource('teachers', TeachersController::class);
 
 	Route::get('settings', [SettingController::class, 'index']);
 	Route::post('settings', [SettingController::class, 'update']);

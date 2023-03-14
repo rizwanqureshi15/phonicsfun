@@ -29,7 +29,7 @@ class CreateCoursesTable extends Migration
             $table->string('writing_activity');
             $table->string('cost_per_class');
             $table->string('duration');
-            $table->string('image')->nullable();;
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

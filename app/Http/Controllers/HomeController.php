@@ -28,14 +28,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $courses = Course::with('category')->where('is_active', true)->get();
+        return view('home', compact('courses'));
     }
 
 
     public function home()
     {
         $courses = Course::with('category')->where('is_active', true)->get();
-
         return view('home', compact('courses'));
     }
 

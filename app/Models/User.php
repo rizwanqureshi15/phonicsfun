@@ -20,6 +20,14 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'address',
+        'date_of_birth',
+        'gender',
+        'qualification',
+        'image',
+        'is_active',
+        'phone',
+        'email_verified_at'
     ];
 
     /**
@@ -40,4 +48,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function roles()
+    {
+        return $this
+            ->belongsToMany('App\Models\Role')
+            ->withTimestamps();
+    }
+
+
+    public static function getAllGenders(){
+        return [
+            'male' => 'Male',
+            'female' => 'Female',
+        ];
+    }
 }

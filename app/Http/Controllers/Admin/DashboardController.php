@@ -49,7 +49,7 @@ class DashboardController extends Controller
             'new_password_confirmation' => 'required',
         ]);     
         
-        $user = Auth::user();
+        $user = Auth::guard('admin')->user();
         $old_password = $request->get('password');
         if(Hash::check($old_password, $user->password))
         {

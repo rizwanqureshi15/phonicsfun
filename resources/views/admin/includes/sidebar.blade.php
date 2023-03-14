@@ -1,3 +1,4 @@
+@if(Auth::guard('admin')->user())
 <div class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar">
     <div class="c-sidebar-brand">
       <!-- <img class="c-sidebar-brand-full" src="" width="118" height="46" alt="CoreUI Logo"> -->
@@ -45,6 +46,23 @@
         </ul>
       </li>
 
+      <li class="c-sidebar-nav-item c-sidebar-nav-dropdown"><a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
+          <i class="c-sidebar-nav-icon cil-user"></i>
+          Manage Teachers</a>
+        <ul class="c-sidebar-nav-dropdown-items">
+          <li class="c-sidebar-nav-item">
+            <a class="c-sidebar-nav-link {{ Request::is('admin/teachers') ? 'active' : '' }}" href="{{ url('admin/teachers') }}">
+              <span class="c-sidebar-nav-icon"></span> Teachers
+            </a>
+
+             <a class="c-sidebar-nav-link {{ Request::is('admin/teachers/create') ? 'active' : '' }}" href="{{ url('admin/teachers/create') }}">
+              <span class="c-sidebar-nav-icon"></span> Add New
+            </a>
+          </li>
+         
+        </ul>
+      </li>
+
     <!--   <li class="c-sidebar-nav-item c-sidebar-nav-dropdown"><a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
           <i class="c-sidebar-nav-icon cil-user"></i>
           Manage Users</a>
@@ -64,4 +82,28 @@
 
 
     <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent" data-class="c-sidebar-minimized"></button>
-  </div>
+</div>
+@else
+<div class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar">
+    <div class="c-sidebar-brand">
+      <!-- <img class="c-sidebar-brand-full" src="" width="118" height="46" alt="CoreUI Logo"> -->
+      {{ config('app.name', 'Laravel') }}
+    </div>
+    
+    <ul class="c-sidebar-nav">
+      <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link {{ Request::is('dashboard') ? 'c-active' : '' }}" href="{{ url('dashboard') }}">
+          <i class="c-sidebar-nav-icon cil-speedometer"></i>
+          Dashboard
+          <!-- <span class="badge badge-info">NEW</span> -->
+        </a>
+      </li>
+      
+    </ul>
+   
+
+
+    <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent" data-class="c-sidebar-minimized"></button>
+</div>
+
+@endif
