@@ -13,7 +13,7 @@ use App\Models\User;
 use App\Models\Role;
 use Yajra\DataTables\DataTables;
 
-class TeachersController extends Controller
+class ParentsController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -32,28 +32,29 @@ class TeachersController extends Controller
      */
     public function index()
     {
-        return view('admin.teachers.index');
+        return view('admin.parents.index');
     }
 
-    public function getTeachers()
+    public function getparents()
     {
-        $teachers = User::whereHas('roles', function($query) {
-           $query->where('name', 'teacher');
+
+        $parents = User::whereHas('roles', function($query) {
+           $query->where('name', 'parent');
         });
-        
-        return Datatables::of($teachers)
+
+        return Datatables::of($parents)
                 ->editColumn('created_at', function($user){
 					return $user->created_at->diffForHumans();
 				})
-                ->editColumn('image', function($teacher){
-                    return '<img class="img-thumbnail" src="'.Storage::url("teachers/". $teacher->image) .'" width="50px;" height="50px;">';
+                ->editColumn('image', function($parent){
+                    return '<img class="img-thumbnail" src="'.Storage::url("parents/". $parent->image) .'" width="50px;" height="50px;">';
                 })
-                 ->addColumn('action', function ($teacher) {
+                 ->addColumn('action', function ($parent) {
                      return '<div class="btn-group">
-                                <a href="'. url("admin/teachers/$teacher->id/show").'" class="btn btn-primary" title="show"><i class="cil-description"></i></a>
-                                <a href="'. url("admin/teachers/$teacher->id/edit").'" class="btn btn-primary" title="edit"><i class="cil-pencil"></i></a>
+                                <a href="'. url("admin/parents/$parent->id/show").'" class="btn btn-primary" title="show"><i class="cil-description"></i></a>
+                                <a href="'. url("admin/parents/$parent->id/edit").'" class="btn btn-primary" title="edit"><i class="cil-pencil"></i></a>
                         </div>';
-                        // <a href="'. url("admin/teachers/$teacher->id").'" class="btn btn-danger btn-delete-record" title="delete" data-id="'.$teacher->id.'"><i class="cil-trash"></i></a> 
+                        // <a href="'. url("admin/parents/$parent->id").'" class="btn btn-danger btn-delete-record" title="delete" data-id="'.$parent->id.'"><i class="cil-trash"></i></a> 
                 })
                 ->rawColumns(['action', 'image'])
                 ->make(true);
@@ -62,7 +63,7 @@ class TeachersController extends Controller
     public function create()
     {
     	$genders = User::getAllGenders();
-        return view('admin.teachers.create', compact('genders'));
+        return view('admin.parents.create', compact('genders'));
     }
     
     public function store(Request $request){
@@ -73,9 +74,9 @@ class TeachersController extends Controller
 	        'email' => 'required|email|unique:users,email',
             'phone' => 'required',
             'address' => 'required',
-            'date_of_birth' => 'required',
+            // 'date_of_birth' => 'required',
             'gender' => 'required',
-            'qualification' => 'required',
+            // 'qualification' => 'required',
             // 'image' => 'required',
         ];
 
@@ -90,40 +91,40 @@ class TeachersController extends Controller
         {
             $image = $request->image;
             $filename  = time().rand(0,9999999).'.'.$image->getClientOriginalExtension();  
-            $filePath = 'teachers' . DIRECTORY_SEPARATOR . $filename;
+            $filePath = 'parents' . DIRECTORY_SEPARATOR . $filename;
             Storage::disk('public')->put($filePath, file_get_contents($image));
 
             $requestArr['image'] = $filename;
         }
 
-        $teacher = User::create($data);
+        $parent = User::create($data);
 
-        $teacher->roles()->attach(1);
+        $parent->roles()->attach(2);
 
-        return redirect('admin/teachers')->with('success', 'Teacher added successfully');
+        return redirect('admin/parents')->with('success', 'Parent added successfully');
     }
 
 
     public function show($id)
     {
-        $teacher = User::find($id);
-        if(!$teacher){
-            return redirect('admin/teachers');
+        $parent = User::find($id);
+        if(!$parent){
+            return redirect('admin/parents');
         }
 
         $genders = User::getAllGenders();
-        return view('admin.teachers.show', compact('genders', 'teacher'));
+        return view('admin.parents.show', compact('genders', 'parent'));
     }
 
     public function edit($id)
     {
-        $teacher = User::find($id);
-        if(!$teacher){
-            return redirect('admin/teachers');
+        $parent = User::find($id);
+        if(!$parent){
+            return redirect('admin/parents');
         }
 
         $genders = User::getAllGenders();
-        return view('admin.teachers.edit', compact('genders', 'teacher'));
+        return view('admin.parents.edit', compact('genders', 'parent'));
     }
 
 
@@ -133,9 +134,9 @@ class TeachersController extends Controller
             'name' => 'required',
             'phone' => 'required',
             'address' => 'required',
-            'date_of_birth' => 'required',
+            // 'date_of_birth' => 'required',
             'gender' => 'required',
-            'qualification' => 'required',
+            // 'qualification' => 'required',
         ];
 
         if($request->password){
@@ -145,7 +146,7 @@ class TeachersController extends Controller
 
         $request->validate($rules);
 
-        $teacher = User::find($id);
+        $parent = User::find($id);
     
         $requestArr = $request->all();
 
@@ -154,47 +155,47 @@ class TeachersController extends Controller
         // }
         
         
-        if($teacher){
-            $oldImage = ($teacher)?$teacher->getRawOriginal('image'):'';
+        if($parent){
+            $oldImage = ($parent)?$parent->getRawOriginal('image'):'';
             
-            $teacher->update($requestArr);  
+            $parent->update($requestArr);  
 
             if($request->hasFile('image')){
            
                 $image = $request->image;
                 $filename  = time().rand(0,9999999).'.'.$image->getClientOriginalExtension();   
-                $filePath = 'teachers' . DIRECTORY_SEPARATOR . $filename;
+                $filePath = 'parents' . DIRECTORY_SEPARATOR . $filename;
                 Storage::disk('public')->put($filePath, file_get_contents($image));
                 
-                $teacher->image = $filename;
-                $teacher->save();  
+                $parent->image = $filename;
+                $parent->save();  
 
-                $oldImagePath = 'teachers' . DIRECTORY_SEPARATOR . $oldImage;
+                $oldImagePath = 'parents' . DIRECTORY_SEPARATOR . $oldImage;
                 if(Storage::disk('public')->exists($oldImagePath)){
                     Storage::disk('public')->delete($oldImagePath);
                 }                   
             }   
         }
         
-        return redirect('admin/teachers')->with('success', 'Teacher updated successfully!');
+        return redirect('admin/parents')->with('success', 'parent updated successfully!');
     }
     
     public function destroy($id) {
-        $teacher = User::find($id);
+        $parent = User::find($id);
         
-        if ($teacher) {
+        if ($parent) {
             //delete 
-            $oldImagePath = 'teachers' . DIRECTORY_SEPARATOR . $teacher->getRawOriginal('image');
+            $oldImagePath = 'parents' . DIRECTORY_SEPARATOR . $parent->getRawOriginal('image');
             if(Storage::disk('public')->exists($oldImagePath)){
                 Storage::disk('public')->delete($oldImagePath);
             } 
-            $teacher->roles()->detach();
-            $teacher->delete();
+            $parent->roles()->detach();
+            $parent->delete();
 
-            return redirect('admin/teachers')->with('success', 'Teacher deleted successfully!');
+            return redirect('admin/parents')->with('success', 'parent deleted successfully!');
             
         } else {
-            return redirect('admin/teachers')->with('error', 'No data found!');
+            return redirect('admin/parents')->with('error', 'No data found!');
         }
     }
 

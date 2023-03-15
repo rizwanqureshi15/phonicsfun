@@ -63,6 +63,23 @@
         </ul>
       </li>
 
+      <li class="c-sidebar-nav-item c-sidebar-nav-dropdown"><a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
+          <i class="c-sidebar-nav-icon cil-user"></i>
+          Manage Parents</a>
+        <ul class="c-sidebar-nav-dropdown-items">
+          <li class="c-sidebar-nav-item">
+            <a class="c-sidebar-nav-link {{ Request::is('admin/parents') ? 'active' : '' }}" href="{{ url('admin/parents') }}">
+              <span class="c-sidebar-nav-icon"></span> Parents
+            </a>
+
+             <a class="c-sidebar-nav-link {{ Request::is('admin/parents/create') ? 'active' : '' }}" href="{{ url('admin/parents/create') }}">
+              <span class="c-sidebar-nav-icon"></span> Add New
+            </a>
+          </li>
+         
+        </ul>
+      </li>
+
     <!--   <li class="c-sidebar-nav-item c-sidebar-nav-dropdown"><a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
           <i class="c-sidebar-nav-icon cil-user"></i>
           Manage Users</a>
@@ -84,6 +101,9 @@
     <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent" data-class="c-sidebar-minimized"></button>
 </div>
 @else
+
+
+
 <div class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar">
     <div class="c-sidebar-brand">
       <!-- <img class="c-sidebar-brand-full" src="" width="118" height="46" alt="CoreUI Logo"> -->
@@ -98,10 +118,11 @@
           <!-- <span class="badge badge-info">NEW</span> -->
         </a>
       </li>
-      
-    </ul>
-   
 
+      @if(Auth::guard('web')->user()->hasRole('teacher'))
+      @else
+      @endif
+    </ul>
 
     <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent" data-class="c-sidebar-minimized"></button>
 </div>

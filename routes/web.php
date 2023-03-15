@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\CoursesController;
 use App\Http\Controllers\Admin\TeachersController;
+use App\Http\Controllers\Admin\ParentsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,6 +72,10 @@ Route::prefix('admin')->group(function () {
 	Route::get('teachers/get-teachers', [TeachersController::class, 'getTeachers']);
 	Route::get('teachers/{id}/show', [TeachersController::class, 'show']);
 	Route::resource('teachers', TeachersController::class);
+
+	Route::get('parents/get-parents', [ParentsController::class, 'getParents']);
+	Route::get('parents/{id}/show', [ParentsController::class, 'show']);
+	Route::resource('parents', ParentsController::class);
 
 	Route::get('settings', [SettingController::class, 'index']);
 	Route::post('settings', [SettingController::class, 'update']);

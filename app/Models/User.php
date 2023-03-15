@@ -56,6 +56,14 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
+    public function hasRole($role)
+    {
+      if ($this->roles()->where('name', $role)->first()) {
+        return true;
+      }
+      return false;
+    }
+
 
     public static function getAllGenders(){
         return [
