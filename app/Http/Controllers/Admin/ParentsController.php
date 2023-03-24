@@ -11,6 +11,8 @@ use Storage;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Student;
+use App\Models\Course;
 use Yajra\DataTables\DataTables;
 
 class ParentsController extends Controller
@@ -35,7 +37,7 @@ class ParentsController extends Controller
         return view('admin.parents.index');
     }
 
-    public function getparents()
+    public function getParents()
     {
 
         $parents = User::whereHas('roles', function($query) {
@@ -113,7 +115,8 @@ class ParentsController extends Controller
         }
 
         $genders = User::getAllGenders();
-        return view('admin.parents.show', compact('genders', 'parent'));
+        $students = Student::where('parent_id', $parent->id)->get();
+        return view('admin.parents.show', compact('genders', 'parent', 'students'));
     }
 
     public function edit($id)
@@ -189,6 +192,9 @@ class ParentsController extends Controller
             if(Storage::disk('public')->exists($oldImagePath)){
                 Storage::disk('public')->delete($oldImagePath);
             } 
+
+            //delete student
+            Student::where('parent_id', $parent->id)->delete();
             $parent->roles()->detach();
             $parent->delete();
 
@@ -197,6 +203,54 @@ class ParentsController extends Controller
         } else {
             return redirect('admin/parents')->with('error', 'No data found!');
         }
+    }
+
+
+    public function addStudent(Request $request){
+
+        $rules = [
+            'name' => 'required',
+            'parent_id' => 'required|integer',
+        ];
+
+        $request->validate($rules);
+        $data = $request->all();
+
+        $student = Student::create($data);
+
+        return back()->with('success', 'Student added successfully');
+    }
+
+
+    public function assignCourses($student_id){
+        $student = Student::find($student_id);
+        if(!$student){
+            return redirect('admin/parents');
+        }
+
+        $courses = Course::where('is_active', true)->get();
+        $teachers = User::whereHas('roles', function($query) {
+           $query->where('name', 'teacher');
+        })->get();
+        
+        return view('admin.parents.assign_courses', compact('courses', 'teachers', 'student'));
+    }
+
+
+    public function postAssignCourses(Request $request){
+
+        $rules = [
+            'student_id' => 'required',
+            'teacher_id' => 'required|integer',
+            'course_id' => 'required|integer',
+        ];
+
+        $request->validate($rules);
+        $data = $request->all();
+
+        $student = Student::create($data);
+
+        return back()->with('success', 'Student added successfully');
     }
 
 }

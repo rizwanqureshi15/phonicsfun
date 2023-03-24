@@ -75,7 +75,12 @@ Route::prefix('admin')->group(function () {
 
 	Route::get('parents/get-parents', [ParentsController::class, 'getParents']);
 	Route::get('parents/{id}/show', [ParentsController::class, 'show']);
+	Route::post('parents/add-student', [ParentsController::class, 'addStudent']);
+	Route::get('assign-courses/{id}', [ParentsController::class, 'assignCourses']);
+	Route::post('assign-courses', [ParentsController::class, 'postAssignCourses']);
 	Route::resource('parents', ParentsController::class);
+
+
 
 	Route::get('settings', [SettingController::class, 'index']);
 	Route::post('settings', [SettingController::class, 'update']);
