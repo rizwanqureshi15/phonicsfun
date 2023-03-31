@@ -12,10 +12,8 @@ class Student extends Model
 		'name', 'parent_id'
 	];
 
-	public function users()
+	public function user()
     {
-        return $this
-            ->belongsToMany('App\Models\User')
-            ->withTimestamps();
+        return $this->belongToMany('App\Models\User', 'parent_id');
     }
 }

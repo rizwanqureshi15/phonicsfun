@@ -56,6 +56,11 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
+    public function students()
+    {
+        return $this->hasMany('App\Models\Student', 'parent_id');
+    }
+
     public function hasRole($role)
     {
       if ($this->roles()->where('name', $role)->first()) {

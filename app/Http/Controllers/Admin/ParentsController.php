@@ -13,6 +13,8 @@ use App\Models\User;
 use App\Models\Role;
 use App\Models\Student;
 use App\Models\Course;
+use App\Models\Batch;
+use App\Models\Lesson;
 use Yajra\DataTables\DataTables;
 
 class ParentsController extends Controller
@@ -222,25 +224,23 @@ class ParentsController extends Controller
     }
 
 
-    public function assignCourses($student_id){
-        $student = Student::find($student_id);
-        if(!$student){
-            return redirect('admin/parents');
-        }
-
+    public function assignCourses(){
+        $students = Student::all();
         $courses = Course::where('is_active', true)->get();
         $teachers = User::whereHas('roles', function($query) {
            $query->where('name', 'teacher');
         })->get();
         
-        return view('admin.parents.assign_courses', compact('courses', 'teachers', 'student'));
+        return view('admin.parents.assign_courses', compact('courses', 'teachers', 'students'));
     }
 
 
     public function postAssignCourses(Request $request){
 
         $rules = [
-            'student_id' => 'required',
+            'name' => 'required',
+            'amount' => 'required',
+            'student_ids' => 'required',
             'teacher_id' => 'required|integer',
             'course_id' => 'required|integer',
         ];
@@ -248,9 +248,164 @@ class ParentsController extends Controller
         $request->validate($rules);
         $data = $request->all();
 
-        $student = Student::create($data);
+        if($request->start_time == $request->end_time){
+            return back()->with('error', 'Start and End time should not be same.');
+        }
 
-        return back()->with('success', 'Student added successfully');
+        $days = 0;
+        if($request->monday){
+            $days++;
+        }
+
+        if($request->tuesday){
+            $days++;
+        }
+        if($request->wednesday){
+            $days++;
+        }
+        if($request->thursday){
+            $days++;
+        }
+        if($request->friday){
+            $days++;
+        }
+        if($request->saturday){
+            $days++;
+        }
+
+        if($request->sunday){
+            $days++;
+        }
+
+        $course = Course::find($request->course_id);
+
+        if($course->classes_per_week != $days){
+            return back()->with('error', 'Select week '.$course->classes_per_week .' days');
+        }
+
+        //create batch
+        $batchData['name'] = $request->name;
+        $batchData['teacher_id'] = $request->teacher_id;
+        $batchData['course_id'] = $request->course_id;
+        $batchData['amount'] = $request->amount;
+        
+        if(count($request->student_ids) == 1){
+            $batchData['is_one_on_one'] = true;
+        }
+        
+        $batch = Batch::create($batchData);
+        $dates = [];
+        $start_day = strtolower(Carbon::parse($request->start_date)->dayName);
+        
+        if($request->monday && 'monday' == $start_day){
+            $start_date1 = Carbon::parse($request->start_date)->format('Y-m-d');
+        }
+        elseif($request->tuesday && 'tuesday' == $start_day){
+            $start_date1 = Carbon::parse($request->start_date)->format('Y-m-d');
+        }
+
+        elseif($request->wednesday && 'wednesday' == $start_day){
+            $start_date1 = Carbon::parse($request->start_date)->format('Y-m-d');
+        }
+
+        elseif($request->thursday && 'thursday' == $start_day){
+            $start_date1 = Carbon::parse($request->start_date)->format('Y-m-d');
+        }
+
+        elseif($request->friday && 'friday' == $start_day){
+            $start_date1 = Carbon::parse($request->start_date)->format('Y-m-d');
+        }
+
+        elseif($request->saturday && 'saturday' == $start_day){
+            $start_date1 = Carbon::parse($request->start_date)->format('Y-m-d');
+        }
+        elseif($request->sunday && 'sunday' == $start_day){
+            $start_date1 = Carbon::parse($request->start_date)->format('Y-m-d');
+        }
+
+        for ($i=0; $i < $course->total_classes ; $i++) {
+            if($request->monday){
+                array_push($dates, Carbon::parse($request->start_date)->addWeeks($i)->next('monday')->format('Y-m-d'));
+            }
+
+            if($request->tuesday){
+                array_push($dates, Carbon::parse($request->start_date)->addWeeks($i)->next('tuesday')->format('Y-m-d'));
+            }
+
+            if($request->wednesday){
+                array_push($dates, Carbon::parse($request->start_date)->addWeeks($i)->next('wednesday')->format('Y-m-d'));
+            }
+
+            if($request->thursday){
+                array_push($dates, Carbon::parse($request->start_date)->addWeeks($i)->next('thursday')->format('Y-m-d'));
+            }
+
+            if($request->friday){
+                array_push($dates, Carbon::parse($request->start_date)->addWeeks($i)->next('friday')->format('Y-m-d'));
+            }
+
+            if($request->saturday){
+                array_push($dates, Carbon::parse($request->start_date)->addWeeks($i)->next('saturday')->format('Y-m-d'));
+            }
+
+            if($request->sunday){
+                array_push($dates, Carbon::parse($request->start_date)->addWeeks($i)->next('sunday')->format('Y-m-d'));
+            }
+            
+        }
+        array_unshift($dates , $start_date1);
+        sort($dates);
+        
+        //create lessons
+        foreach ($request->student_ids as $student_id) {
+
+            // create total number of events
+            for ($i=0; $i < $course->total_classes ; $i++) { 
+                $lessons[$i]['teacher_id'] = $request->teacher_id;
+                $lessons[$i]['course_id'] = $request->course_id;
+                $lessons[$i]['batch_id'] = $batch->id;
+                $lessons[$i]['date'] = $dates[$i];
+                $lessons[$i]['start_time'] = $request->start_time;
+                $lessons[$i]['end_time'] = $request->end_time;
+                $lessons[$i]['status'] = 0;
+                $lessons[$i]['student_id'] = $student_id;
+                $lessons[$i]['attendance'] = 0;
+            }
+        }
+        
+        $lessons = Lesson::insert($lessons);
+
+        return back()->with('success', 'Students assign to course please check in calender');
     }
 
+
+    public function calendar($student_id){
+        $student = Student::find($student_id);
+        
+        return view('admin.parents.calender', compact('student'));
+    }
+
+
+    public function getEvent(Request $request){
+        
+        $start_date = Carbon::parse($request->start)->format('Y-m-d');
+        $end_date = Carbon::parse($request->end)->format('Y-m-d');
+
+        $events = Lesson::with('batch')->whereDate('date', '>=', $start_date)
+                        ->whereDate('date', '<=', $end_date)
+                        ->get();
+        foreach($events as $event){
+            $event->title = $event->start_time.' - '.$event->batch->name;
+            $event->start = $event->date.' '.$event->start_time;
+            $event->end = $event->date.' '.$event->end_time;
+            if($event->status == '1'){
+                $event->color = '#A3D687';    
+            }elseif($event->status == '2'){
+                $event->color = '#FF9B9A';
+            }
+            
+        }
+        return response()->json($events);
+        
+    }
 }

@@ -19,7 +19,7 @@
 		<div class="col-md-6 pl-0">
 			<ul class="list-group  list-group-flush">
 				@foreach($students as $student)
-			  		<li class="list-group-item">{{ $student->name }} <a href="{{ url('admin/assign-courses/'.$student->id )}}" class="btn btn-primary float-right">Assign Course</a></li>
+			  		<li class="list-group-item"> <a href="{{ url('admin/parents/students/'.$student->id )}}" class="">{{ $student->name }}</a></li>
 			  	@endforeach
 			</ul>
 		</div>

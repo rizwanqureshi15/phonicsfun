@@ -80,6 +80,21 @@
         </ul>
       </li>
 
+       <li class="c-sidebar-nav-item c-sidebar-nav-dropdown"><a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
+          <i class="c-sidebar-nav-icon cil-user"></i>
+         Assign courses</a>
+        <ul class="c-sidebar-nav-dropdown-items">
+          <li class="c-sidebar-nav-item">
+            <a class="c-sidebar-nav-link {{ Request::is('admin/assign-courses') ? 'active' : '' }}" href="{{ url('admin/assign-courses') }}">
+              <span class="c-sidebar-nav-icon"></span> Assign courses
+            </a>
+
+            
+          </li>
+         
+        </ul>
+      </li>
+
     <!--   <li class="c-sidebar-nav-item c-sidebar-nav-dropdown"><a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
           <i class="c-sidebar-nav-icon cil-user"></i>
           Manage Users</a>
@@ -115,6 +130,14 @@
         <a class="c-sidebar-nav-link {{ Request::is('dashboard') ? 'c-active' : '' }}" href="{{ url('dashboard') }}">
           <i class="c-sidebar-nav-icon cil-speedometer"></i>
           Dashboard
+          <!-- <span class="badge badge-info">NEW</span> -->
+        </a>
+      </li>
+
+      <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link {{ Request::is('calendar') ? 'c-active' : '' }}" href="{{ url('calendar') }}">
+          <i class="c-sidebar-nav-icon cil-speedometer"></i>
+          Calendar
           <!-- <span class="badge badge-info">NEW</span> -->
         </a>
       </li>

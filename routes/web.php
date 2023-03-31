@@ -45,10 +45,12 @@ Route::post('book-demo', [HomeController::class, 'postBookDemo']);
 Route::get('/login', [UserController::class, 'login'])->name('login');
 Route::post('/login', [UserController::class, 'postLogin']);
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
-Route::get('dashboard', [App\Http\Controllers\DashboardController::class, 'index']);
 Route::get('/change-password', [UserController::class, 'changePassword']);
 Route::post('/change-password', [UserController::class, 'postChangePassword']);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('dashboard', [App\Http\Controllers\DashboardController::class, 'index']);
+Route::get('calendar', [App\Http\Controllers\DashboardController::class, 'calendar']);
+Route::get('users/getEvent', [App\Http\Controllers\DashboardController::class, 'getEvent']);
 
 # Admin routes
 Route::prefix('admin')->group(function () {
@@ -76,7 +78,9 @@ Route::prefix('admin')->group(function () {
 	Route::get('parents/get-parents', [ParentsController::class, 'getParents']);
 	Route::get('parents/{id}/show', [ParentsController::class, 'show']);
 	Route::post('parents/add-student', [ParentsController::class, 'addStudent']);
-	Route::get('assign-courses/{id}', [ParentsController::class, 'assignCourses']);
+	Route::get('parents/students/{id}', [ParentsController::class, 'calendar']);
+	Route::get('parents/students/{id}/getEvent', [ParentsController::class, 'getEvent']);
+	Route::get('assign-courses', [ParentsController::class, 'assignCourses']);
 	Route::post('assign-courses', [ParentsController::class, 'postAssignCourses']);
 	Route::resource('parents', ParentsController::class);
 
@@ -88,6 +92,3 @@ Route::prefix('admin')->group(function () {
 	// Route::get('content-management', 'ContentManagementController@index');
 	// Route::post('content-management', 'ContentManagementController@update');
 });
-
-
-Route::get('{category}/{course}', [HomeController::class, 'courseDetail']);
