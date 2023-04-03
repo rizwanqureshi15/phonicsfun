@@ -240,6 +240,7 @@ class ParentsController extends Controller
         $rules = [
             'name' => 'required',
             'amount' => 'required',
+            'tutor_rate' => 'required',
             'student_ids' => 'required',
             'teacher_id' => 'required|integer',
             'course_id' => 'required|integer',

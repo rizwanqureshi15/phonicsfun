@@ -92,6 +92,18 @@
 </div>
 
 <div class="form-group row">
+    <label class="col-md-2 col-form-label" for="name">Tutor Rate</label>
+    <div class="col-md-6">
+        <input class="form-control  @error('tutor_rate') is-invalid @enderror" id="tutor_rate" type="text" name="tutor_rate" placeholder="Enter Tutor Rate" value="{{ (isset($batch))? $batch->tutor_rate : old('tutor_rate') }}">
+        @error('tutor_rate')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        @enderror
+    </div>
+</div>
+
+<div class="form-group row">
     <label class="col-md-2 col-form-label" for="start_date">Start Date</label>
     <div class="col-md-6">
         <input class="form-control  @error('start_date') is-invalid @enderror" id="start_date" type="text" name="start_date" placeholder="Enter Start Date" value="{{ (isset($batch))? $batch->start_date : old('start_date') }}">

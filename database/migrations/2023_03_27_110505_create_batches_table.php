@@ -19,7 +19,9 @@ class CreateBatchesTable extends Migration
             $table->boolean('is_one_on_one')->default(0);
             $table->integer('teacher_id');
             $table->integer('course_id');
-            $table->integer('amount')->default(0);
+            $table->float('amount', 8, 2)->default(0);
+            $table->float('tutor_rate', 8, 2)->default(0);
+            $table->integer('status');
             $table->timestamps();
         });
     }

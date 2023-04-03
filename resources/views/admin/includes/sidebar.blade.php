@@ -1,4 +1,5 @@
 @if(Auth::guard('admin')->user())
+
 <div class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar">
     <div class="c-sidebar-brand">
       <!-- <img class="c-sidebar-brand-full" src="" width="118" height="46" alt="CoreUI Logo"> -->
@@ -143,6 +144,13 @@
       </li>
 
       @if(Auth::guard('web')->user()->hasRole('teacher'))
+      <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link {{ Request::is('my-jobs') ? 'c-active' : '' }}" href="{{ url('my-jobs') }}">
+          <i class="c-sidebar-nav-icon cil-speedometer"></i>
+          My Jobs
+          <!-- <span class="badge badge-info">NEW</span> -->
+        </a>
+      </li>
       @else
       @endif
     </ul>

@@ -7,6 +7,7 @@ use App\Models\User;
 use Auth;
 use Carbon\Carbon;
 use App\Models\Lesson;
+use App\Models\Batch;
 
 class DashboardController extends Controller
 {
@@ -76,6 +77,42 @@ class DashboardController extends Controller
         }
         return response()->json($events);
         
+    }
+
+
+    public function myJobs(Request $request){
+        $user = Auth::guard('web')->user();
+
+        if($user->hasRole('parent')){
+            return redirect('/dashboard');
+        }
+
+
+        $jobs = Batch::where('teacher_id', $user->id)
+                        ->orderBy('id', 'DESC')
+                        ->get();
+
+        return view('users.my_jobs', compact('jobs'));
+
+
+    }
+
+    public function lessonsByBatch($batch_id, Request $request){
+
+        $user = Auth::guard('web')->user();
+
+        if($user->hasRole('parent')){
+            return redirect('/dashboard');
+        }
+
+
+        $jobs = Lesson::with('batch')
+                        ->where('batch_id', $batch_id)
+                        ->get();
+
+        $batch = Batch::find($batch_id);
+
+        return view('users.lessons', compact('jobs', 'batch'));
     }
 
     
