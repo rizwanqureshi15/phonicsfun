@@ -53,6 +53,7 @@ Route::get('calendar', [App\Http\Controllers\DashboardController::class, 'calend
 Route::get('users/getEvent', [App\Http\Controllers\DashboardController::class, 'getEvent']);
 Route::get('my-jobs', [App\Http\Controllers\DashboardController::class, 'myJobs']);
 Route::get('my-jobs/{id}', [App\Http\Controllers\DashboardController::class, 'lessonsByBatch']);
+Route::get('{category}/{course}', [HomeController::class, 'courseDetail']);
 
 # Admin routes
 Route::prefix('admin')->group(function () {
