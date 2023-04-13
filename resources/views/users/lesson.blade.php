@@ -75,9 +75,9 @@
 				  				<label class="c-switch c-switch-label c-switch-pill c-switch-success">
 		                        		<input class="c-switch-input attendance" value="1" type="checkbox" 
 		                        		@foreach($lesson_students as $lesson_student)
-		                        			@if($lesson_student->student_id == $student->id && $lesson_student->attendance)
+		                        			@if($lesson_student->student_id == $student->id && $lesson_student->lesson_id == $lesson->id && $lesson_student->attendance)
 		                        				data-id="{{ $lesson_student->id }}" checked
-		                        			@elseif($lesson_student->student_id == $student->id)
+		                        			@elseif($lesson_student->student_id == $student->id && $lesson_student->lesson_id == $lesson->id)
 		                        				data-id="{{ $lesson_student->id }}"
 		                        			@endif
 		                        		@endforeach

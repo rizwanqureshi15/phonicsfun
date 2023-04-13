@@ -58,6 +58,8 @@ Route::delete('my-jobs/cancelled', [App\Http\Controllers\DashboardController::cl
 Route::delete('my-jobs/complete', [App\Http\Controllers\DashboardController::class, 'completeLesson']);
 
 Route::post('toggel-attendance', [App\Http\Controllers\DashboardController::class, 'toggelAttendance']);
+Route::get('classes', [App\Http\Controllers\DashboardController::class, 'classes']);
+Route::get('classes/{id}', [App\Http\Controllers\DashboardController::class, 'classesByBatch']);
 
 Route::get('my-jobs/{batch_id}/{lesson_id}', [App\Http\Controllers\DashboardController::class, 'lesson']);
 # Admin routes

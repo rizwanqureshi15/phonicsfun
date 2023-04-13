@@ -152,6 +152,14 @@
         </a>
       </li>
       @else
+
+      <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link {{ Request::is('classes') ? 'c-active' : '' }}" href="{{ url('classes') }}">
+          <i class="c-sidebar-nav-icon cil-speedometer"></i>
+          Classes
+          <!-- <span class="badge badge-info">NEW</span> -->
+        </a>
+      </li>
       @endif
     </ul>
 

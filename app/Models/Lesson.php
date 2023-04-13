@@ -9,7 +9,7 @@ class Lesson extends Model
 	protected $table = 'lessons';
 
     protected $fillable = [
-		'student_id', 'batch_id', 'teacher_id', 'course_id', 'start_time', 'end_time', 'date', 'status'
+		'batch_id', 'teacher_id', 'course_id', 'start_time', 'end_time', 'date', 'status'
 	];
 
 	// status
@@ -24,9 +24,9 @@ class Lesson extends Model
         return $this->belongsTo('App\Models\Batch', 'batch_id');
     }
 
-    public function student()
+    public function students()
     {
-        return $this->belongsTo('App\Models\Student', 'student_id');
+        return $this->belongsToMany('App\Models\Student');
     }
 
 

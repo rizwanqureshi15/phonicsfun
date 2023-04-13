@@ -53,10 +53,14 @@ class DashboardController extends Controller
                 array_push($student_ids, $student->id);
             }
 
-            $events = Lesson::with('batch')->whereDate('date', '>=', $start_date)
+            $events = Lesson::with('batch')
+                        ->whereHas('students', function($q)use($student_ids){
+                            $q->whereIn('student_id', $student_ids);
+                        })
+                        ->whereDate('date', '>=', $start_date)
                         ->whereDate('date', '<=', $end_date)
-                        ->whereIn('student_id', $student_ids)
                         ->get();
+
         }else{
             $events = Lesson::with('batch')->whereDate('date', '>=', $start_date)
                         ->whereDate('date', '<=', $end_date)
@@ -194,5 +198,54 @@ class DashboardController extends Controller
 
     }
 
+
+    //parent methods
+    public function classes(Request $request){
+        $user = Auth::guard('web')->user();
+
+        if($user->hasRole('teacher')){
+            return redirect('/dashboard');
+        }
+
+        $student_ids = [];
+        foreach($user->students as $student){
+            array_push($student_ids, $student->id);
+        }
+
+        $jobs = Batch::with('students')
+                        ->whereHas('students', function($q)use($student_ids){
+                            $q->whereIn('student_id', $student_ids);
+                        })
+                        ->orderBy('id', 'DESC')
+                        ->get();
+        
+        return view('users.classes', compact('jobs'));
+    }
+
+
+    public function classesByBatch($batch_id, Request $request){
+
+        $user = Auth::guard('web')->user();
+
+        if($user->hasRole('teacher')){
+            return redirect('/dashboard');
+        }
+
+        $jobs = Lesson::with('batch')
+                        ->where('batch_id', $batch_id)
+                        ->get();
+
+        $batch = Batch::find($batch_id);
+
+        $lesson_ids = [];
+        foreach($jobs as $job){
+            array_push($lesson_ids, $job->id);
+        }
+
+        $lesson_students = LessonStudent::whereIn('lesson_id', $lesson_ids)->get();
+        
+        return view('users.attendance', compact('jobs', 'batch', 'lesson_students'));
+    }
+    
     
 }
