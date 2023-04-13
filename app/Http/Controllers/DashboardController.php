@@ -8,6 +8,7 @@ use Auth;
 use Carbon\Carbon;
 use App\Models\Lesson;
 use App\Models\Batch;
+use App\Models\LessonStudent;
 
 class DashboardController extends Controller
 {
@@ -88,10 +89,10 @@ class DashboardController extends Controller
         }
 
 
-        $jobs = Batch::where('teacher_id', $user->id)
+        $jobs = Batch::with('students')->where('teacher_id', $user->id)
                         ->orderBy('id', 'DESC')
                         ->get();
-
+        
         return view('users.my_jobs', compact('jobs'));
 
 
@@ -113,6 +114,84 @@ class DashboardController extends Controller
         $batch = Batch::find($batch_id);
 
         return view('users.lessons', compact('jobs', 'batch'));
+    }
+
+
+    public function lesson($batch_id, $lesson_id){
+        $user = Auth::guard('web')->user();
+
+        if($user->hasRole('parent')){
+            return redirect('/dashboard');
+        }
+
+
+        $lesson = Lesson::with('batch')
+                        ->where('batch_id', $batch_id)
+                        ->where('id', $lesson_id)
+                        ->first();
+
+        $lesson_students = LessonStudent::where('lesson_id', $lesson_id)->get();
+        return view('users.lesson', compact('lesson', 'lesson_students'));
+
+    }
+
+
+    public function cancelledLesson(Request $request){
+        $user = Auth::guard('web')->user();
+
+        if($user->hasRole('parent')){
+            return redirect('/dashboard');
+        }
+
+
+        $lesson = Lesson::find($request->id);
+        
+        if($lesson){
+            $lesson->status = 2;
+            $lesson->save();
+        }
+
+        return back()->with('success', 'Lesson updated successfully');
+
+    }
+
+    public function completeLesson(Request $request){
+        $user = Auth::guard('web')->user();
+
+        if($user->hasRole('parent')){
+            return redirect('/dashboard');
+        }
+
+
+        $lesson = Lesson::find($request->id);
+        
+        if($lesson){
+            $lesson->status = 3;
+            $lesson->save();
+        }
+
+        return back()->with('success', 'Lesson updated successfully');
+
+    }
+
+
+    public function toggelAttendance(Request $request){
+        $user = Auth::guard('web')->user();
+
+        if($user->hasRole('parent')){
+            return redirect('/dashboard');
+        }
+
+
+        $lesson_student = LessonStudent::find($request->id);
+        
+        if($lesson_student){
+            $lesson_student->attendance = $request->attendance;
+            $lesson_student->save();
+        }
+
+        return response(['success' => true,'message'=>'Attendance updated successfully'], 200);
+
     }
 
     

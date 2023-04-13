@@ -15,6 +15,8 @@ use App\Models\Student;
 use App\Models\Course;
 use App\Models\Batch;
 use App\Models\Lesson;
+use App\Models\BatchStudent;
+use App\Models\LessonStudent;
 use Yajra\DataTables\DataTables;
 
 class ParentsController extends Controller
@@ -289,12 +291,23 @@ class ParentsController extends Controller
         $batchData['teacher_id'] = $request->teacher_id;
         $batchData['course_id'] = $request->course_id;
         $batchData['amount'] = $request->amount;
+        $batchData['tutor_rate'] = $request->tutor_rate;
         
         if(count($request->student_ids) == 1){
             $batchData['is_one_on_one'] = true;
         }
         
         $batch = Batch::create($batchData);
+
+        foreach ($request->student_ids as $key => $student_id) {
+            $students[$key]['batch_id'] = $batch->id;
+            $students[$key]['student_id'] = $student_id;
+            $students[$key]['created_at'] = date('Y-m-d H:i:s');
+            $students[$key]['updated_at'] = date('Y-m-d H:i:s');
+        }
+        
+        BatchStudent::insert($students);
+        
         $dates = [];
         $start_day = strtolower(Carbon::parse($request->start_date)->dayName);
         
@@ -358,23 +371,27 @@ class ParentsController extends Controller
         sort($dates);
         
         //create lessons
-        foreach ($request->student_ids as $student_id) {
+        // create total number of events
+        for ($i=0; $i < $course->total_classes ; $i++) { 
+            $lessonData['teacher_id'] = $request->teacher_id;
+            $lessonData['course_id'] = $request->course_id;
+            $lessonData['batch_id'] = $batch->id;
+            $lessonData['date'] = $dates[$i];
+            $lessonData['start_time'] = $request->start_time;
+            $lessonData['end_time'] = $request->end_time;
+            $lessonData['status'] = 0;
+            
+            $lesson = Lesson::create($lessonData);
 
-            // create total number of events
-            for ($i=0; $i < $course->total_classes ; $i++) { 
-                $lessons[$i]['teacher_id'] = $request->teacher_id;
-                $lessons[$i]['course_id'] = $request->course_id;
-                $lessons[$i]['batch_id'] = $batch->id;
-                $lessons[$i]['date'] = $dates[$i];
-                $lessons[$i]['start_time'] = $request->start_time;
-                $lessons[$i]['end_time'] = $request->end_time;
-                $lessons[$i]['status'] = 0;
-                $lessons[$i]['student_id'] = $student_id;
-                $lessons[$i]['attendance'] = 0;
+            foreach ($request->student_ids as $key => $student_id) {
+                $lessonStudents[$key]['lesson_id'] = $lesson->id;
+                $lessonStudents[$key]['student_id'] = $student_id;
+                $lessonStudents[$key]['created_at'] = date('Y-m-d H:i:s');
+                $lessonStudents[$key]['updated_at'] = date('Y-m-d H:i:s');
             }
+            
+            LessonStudent::insert($lessonStudents);
         }
-        
-        $lessons = Lesson::insert($lessons);
 
         return back()->with('success', 'Students assign to course please check in calender');
     }

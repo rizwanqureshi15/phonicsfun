@@ -22,9 +22,17 @@
 		<tbody>
 			@foreach($jobs as $job)
             <tr>
-                <td><a href='{{ url("my-jobs")}}/{{ $job->id }}'>{{ $job->name}}</a></td>
-                <td>{{ $job->students()->first()->user->name}}</td>
-		        <td>{{ $job->students()->first()->name}}</td>
+                <td><a href='{{ url("my-jobs")}}/{{ $job->id }}'>{{ $job->name }}</a></td>
+                <td>
+		        	@foreach($job->students as $k => $student)
+                		{{ ($k != 0) ? ', ': '' }}{{ $student->user->name }} 
+                	@endforeach
+                </td>
+		        <td>
+		        	@foreach($job->students as $k => $student)
+                		{{ ($k != 0) ? ', ': '' }}{{ $student->name }} 
+                	@endforeach
+                </td>
                 <td>Rs {{ number_format($job->tutor_rate *  $job->course->total_classes, 2 )}}</td>
             </tr>
             @endforeach

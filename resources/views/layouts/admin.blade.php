@@ -113,6 +113,11 @@
   
   <script type="text/javascript">
     site_url = "{{ url('/') }}";
+
+    $.ajaxSetup({
+      headers: {'X-CSRF-Token': $('meta[name=csrf-token]').attr('content')}
+    });
+    
     $(document).on('click','.btn-delete-record',function(){
                 
         if(confirm('Are you sure ?'))

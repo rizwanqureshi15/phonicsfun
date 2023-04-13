@@ -9,7 +9,7 @@ class Lesson extends Model
 	protected $table = 'lessons';
 
     protected $fillable = [
-		'student_id', 'batch_id', 'teacher_id', 'course_id', 'start_time', 'end_time', 'date', 'status', 'attendance'
+		'student_id', 'batch_id', 'teacher_id', 'course_id', 'start_time', 'end_time', 'date', 'status'
 	];
 
 	// status

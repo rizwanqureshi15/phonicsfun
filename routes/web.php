@@ -54,7 +54,12 @@ Route::get('users/getEvent', [App\Http\Controllers\DashboardController::class, '
 Route::get('my-jobs', [App\Http\Controllers\DashboardController::class, 'myJobs']);
 Route::get('my-jobs/{id}', [App\Http\Controllers\DashboardController::class, 'lessonsByBatch']);
 
+Route::delete('my-jobs/cancelled', [App\Http\Controllers\DashboardController::class, 'cancelledLesson']);
+Route::delete('my-jobs/complete', [App\Http\Controllers\DashboardController::class, 'completeLesson']);
 
+Route::post('toggel-attendance', [App\Http\Controllers\DashboardController::class, 'toggelAttendance']);
+
+Route::get('my-jobs/{batch_id}/{lesson_id}', [App\Http\Controllers\DashboardController::class, 'lesson']);
 # Admin routes
 Route::prefix('admin')->group(function () {
     Route::get('login', [AdminLoginController::class, 'login'])->name('adminLogin');

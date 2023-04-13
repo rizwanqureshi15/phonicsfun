@@ -18,16 +18,27 @@
 				<th>Date</th>
 				<th>Status</th>
 				<th>Tutor Rate</th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
 			@foreach($jobs as $job)
             <tr>
-                <td>{{ $job->student->user->name}}</td>
-		        <td>{{ $job->student->name}}</td>
+                <td>
+		        	@foreach($job->batch->students as $k => $student)
+                		{{ ($k != 0) ? ', ': '' }}{{ $student->user->name }} 
+                	@endforeach
+                </td>
+		        <td>
+		        	@foreach($job->batch->students as $k => $student)
+                		{{ ($k != 0) ? ', ': '' }}{{ $student->name }} 
+                	@endforeach
+                </td>
 		        <td>{{ $job->date}}</td>
 		        <td>{{ App\Models\Lesson::getStatusName($job->status)}}</td>
                 <td>Rs {{ number_format($job->batch->tutor_rate, 2 )}}</td>
+                <td><a href='{{ url("my-jobs")}}/{{ $job->batch->id }}/{{ $job->id }}' class="btn btn-primary" title="edit"><i class="cil-pencil"></i></a>
+</td>
             </tr>
             @endforeach
         </tbody>

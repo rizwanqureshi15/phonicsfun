@@ -19,8 +19,12 @@ class Batch extends Model
 
     public function students()
     {
-        return $this->hasMany('App\Models\Student', 'id');
+        return $this->belongsToMany('App\Models\Student');
     }
 
+    public function teacher()
+    {
+        return $this->belongsTo('App\Models\User', 'teacher_id');
+    }
     
 }
