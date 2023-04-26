@@ -29,6 +29,13 @@ class Lesson extends Model
         return $this->belongsToMany('App\Models\Student');
     }
 
+    public function documents()
+    {
+        return $this->hasMany('App\Models\Document', 'lesson_id');
+    }
+
+    
+
 
     public static function getStatusName($status){
         $name = 'Pending';

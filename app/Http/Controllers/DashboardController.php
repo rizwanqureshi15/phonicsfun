@@ -129,7 +129,7 @@ class DashboardController extends Controller
         }
 
 
-        $lesson = Lesson::with('batch')
+        $lesson = Lesson::with(['batch', 'documents'])
                         ->where('batch_id', $batch_id)
                         ->where('id', $lesson_id)
                         ->first();
@@ -231,7 +231,7 @@ class DashboardController extends Controller
             return redirect('/dashboard');
         }
 
-        $jobs = Lesson::with('batch')
+        $jobs = Lesson::with(['batch', 'documents'])
                         ->where('batch_id', $batch_id)
                         ->get();
 

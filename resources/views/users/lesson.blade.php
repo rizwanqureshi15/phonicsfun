@@ -108,10 +108,40 @@
 			<div class="col-md-6">
 				<div class="card">
 					<div class="card-header">
-					    <strong>Documents</strong>
+					    
+					    <form class="form-inline" action="{{ url('upload-documents') }}" method="post" enctype="multipart/form-data">
+					    	@csrf
+						    <div class="form-group">
+	                          <label class="mr-1" for="exampleInputName2"><strong>Documents</strong></label>
+	                          <input class="form-control  @error('name') is-invalid @enderror" id="name" type="file" name="name" >
+								@error('name')
+									<span class="invalid-feedback" role="alert">
+			                          <strong>{{ $name }}</strong>
+			                      </span>
+								@enderror
+
+	                            <input type="hidden" name="lesson_id" value="{{ $lesson->id }}">
+	                            <button type="submit" class="btn btn-success ml-1">Upload</button>
+	                        </div>
+
+	                    </form>
 					</div>
 				  	<div class="card-body">
-				  		<p class="card-text">No Documents</p>
+				  		@if($lesson->documents->count())
+				  		<ul class="list-group">
+				  			
+				  			@foreach($lesson->documents as $document)
+				  			<li class="list-group-item">
+				  			 <a href="{{ Storage::url('documents/'. $lesson->id .'/'. $document->name) }}"  target="_blank">{{  $document->name }}</a>
+
+				  			 <a href="{{ url('documents') }}/{{ $document->id }}" class="btn btn-sm btn-danger btn-delete-record float-right" title="delete" data-id="{{ $document->id }}"><i class="cil-trash"></i></a>
+				  			</li>
+				  			@endforeach
+				  			
+				  		</ul>
+				  		@else
+			  			<p class="card-text">No Documents Found</p>
+			  			@endif
 					</div>
 				</div>
 			</div>

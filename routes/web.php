@@ -60,6 +60,10 @@ Route::delete('my-jobs/complete', [App\Http\Controllers\DashboardController::cla
 Route::post('toggel-attendance', [App\Http\Controllers\DashboardController::class, 'toggelAttendance']);
 Route::get('classes', [App\Http\Controllers\DashboardController::class, 'classes']);
 Route::get('classes/{id}', [App\Http\Controllers\DashboardController::class, 'classesByBatch']);
+Route::get('documents', [App\Http\Controllers\DocumentController::class, 'index']);
+Route::post('upload-documents', [App\Http\Controllers\DocumentController::class, 'store']);
+Route::delete('documents/{id}', [App\Http\Controllers\DocumentController::class, 'destroy']);
+
 
 Route::get('my-jobs/{batch_id}/{lesson_id}', [App\Http\Controllers\DashboardController::class, 'lesson']);
 # Admin routes

@@ -151,6 +151,13 @@
           <!-- <span class="badge badge-info">NEW</span> -->
         </a>
       </li>
+
+      <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link {{ Request::is('documents') ? 'c-active' : '' }}" href="{{ url('documents') }}">
+          <i class="c-sidebar-nav-icon cil-speedometer"></i>
+          Documents
+        </a>
+      </li>
       @else
 
       <li class="c-sidebar-nav-item">

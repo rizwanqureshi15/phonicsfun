@@ -17,6 +17,7 @@
 				<th>Student</th>
 				<th>Attendance</th>
 				<th>Class Status</th>
+				<th>Documents</th>
 				
 			</tr>
 		</thead>
@@ -44,6 +45,11 @@
                 </td>
 		        
 		        <td>{{ App\Models\Lesson::getStatusName($job->status)}}</td>
+		        <td>
+		        	@foreach($job->documents as $k => $document)
+                		<a href="{{ Storage::url('documents/'. $job->id .'/'. $document->name) }}"  target="_blank">{{  $document->name }}</a>
+                	@endforeach
+                </td>
                 
                 
             </tr>
