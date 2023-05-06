@@ -19,6 +19,31 @@
     <link href="{{ asset('admin/vendors/pace-progress/css/pace.min.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/css/custom.css') }}" rel="stylesheet">
     <style>
+
+      
+
+      .c-body{
+        background: #8cc152;
+      }
+
+      .c-sidebar {
+        background: #1eaaf1;
+      }
+
+
+      .c-header{
+        background: #8cc152;
+      }
+
+      .c-footer{
+        background: #8cc152;
+      }      
+
+      .c-sidebar .c-sidebar-nav-link .c-sidebar-nav-icon, .c-sidebar .c-sidebar-nav-dropdown-toggle .c-sidebar-nav-icon {
+          color: #ffffff ;
+        }
+
+
       .c-header.c-header-with-subheader {
           height: auto;
       }
