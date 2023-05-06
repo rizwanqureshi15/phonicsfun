@@ -25,6 +25,46 @@
       div.dataTables_wrapper div.dataTables_length select {
           width: 100% !important;
       }
+
+      .daterangepicker .calendar{
+        margin: 0 !important;
+      }
+
+      @font-face {
+        font-family: 'Glyphicons Halflings';
+        src: url('//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/fonts/glyphicons-halflings-regular.eot');
+        src: url('//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),
+             url('//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/fonts/glyphicons-halflings-regular.woff2') format('woff2'),
+             url('//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/fonts/glyphicons-halflings-regular.woff') format('woff'),
+             url('//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/fonts/glyphicons-halflings-regular.ttf') format('truetype'),
+             url('//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+      }
+      .glyphicon {
+        position: relative;
+        top: 1px;
+        display: inline-block;
+        font: normal normal 16px/1 'Glyphicons Halflings';
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-font-smoothing: antialiased;
+        margin-right: 4px;
+      }
+      /* Add icons you will be using below */
+      .glyphicon-fire:before {
+        content: '\e104';
+      }
+      .glyphicon-eye-open:before {
+        content: '\e105';
+      }
+
+      .glyphicon-left:before {
+        content: '\e079';
+      }
+
+      .glyphicon-right:before {
+        content: '\e080';
+      }
+
+      
     </style>
 
 

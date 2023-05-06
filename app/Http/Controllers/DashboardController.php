@@ -28,7 +28,7 @@ class DashboardController extends Controller
         //get active subscription
         $user = Auth::guard('web')->user();
         
-        return view('users.dashboard');
+        return view('users.dashboard', compact('user'));
     }
 
 
